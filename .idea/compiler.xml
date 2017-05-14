@@ -22,11 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xconfig" />
+        <module name="xconfig-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="xconfig" target="1.5" />
+      <module name="xconfig" target="1.8" />
+      <module name="xconfig-common" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
