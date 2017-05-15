@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xconfig-admin:war">
+    <output-path>$PROJECT_DIR$/xconfig-admin/target</output-path>
+    <root id="archive" name="xconfig-admin.war">
+      <element id="artifact" artifact-name="xconfig-admin:war exploded" />
+    </root>
+  </artifact>
+</component>
