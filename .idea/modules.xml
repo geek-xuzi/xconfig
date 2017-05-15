@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/xconfig.iml" filepath="$PROJECT_DIR$/xconfig.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xconfig-admin/xconfig-admin.iml" filepath="$PROJECT_DIR$/xconfig-admin/xconfig-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/xconfig-common/xconfig-common.iml" filepath="$PROJECT_DIR$/xconfig-common/xconfig-common.iml" />
     </modules>
   </component>

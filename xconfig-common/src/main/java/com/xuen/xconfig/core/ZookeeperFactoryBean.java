@@ -14,10 +14,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 
-/**
- * zheng.xu
- * 2017/5/14.
- */
+
 public class ZookeeperFactoryBean implements FactoryBean<CuratorFramework>, InitializingBean, DisposableBean {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private CuratorFramework zkClient;
