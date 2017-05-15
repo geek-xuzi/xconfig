@@ -1,5 +1,6 @@
 package com.xuen.xconfig.module;
 
+import com.xuen.xconfig.anno.XValue;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -9,14 +10,19 @@ import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Administrator on 2017/5/14.
  */
+@Component
 public class ZkConnection {
 
 
     private String zkConnectionStr;
+
+    @XValue("/xuen")
+    private String xuen;
 
     public ZkConnection(String zkConnectionStr) {
         this.zkConnectionStr = zkConnectionStr;
