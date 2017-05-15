@@ -1,6 +1,10 @@
 package com.xuen.xconfig.core;
 
 import com.xuen.xconfig.ZKListener;
+import com.xuen.xconfig.anno.ZkListenersHolder;
+import java.util.Map;
+import javax.annotation.Resource;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -15,11 +19,16 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.List;
 
 
-public class ZookeeperFactoryBean implements FactoryBean<CuratorFramework>, InitializingBean, DisposableBean {
+public class ZookeeperFactoryBean implements FactoryBean<CuratorFramework>, InitializingBean,
+        DisposableBean {
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private CuratorFramework zkClient;
     private String zkConnectionString;
     private List<ZKListener> listeners;
+
+    @Resource
+    private ZkListenersHolder zkListenersHolder;
 
     public void setListeners(List<ZKListener> listeners) {
         this.listeners = listeners;
@@ -66,19 +75,27 @@ public class ZookeeperFactoryBean implements FactoryBean<CuratorFramework>, Init
     private void registerListeners(CuratorFramework zkClient) {
         zkClient.getConnectionStateListenable().addListener((curatorFramewor, connectionState) -> {
             logger.info("CuratorFramework state changed: {}", connectionState);
-            if (connectionState == ConnectionState.CONNECTED || connectionState == ConnectionState.RECONNECTED) {
-                for (ZKListener listener : listeners) {
-                    listener.executor(zkClient);
-                    logger.info("Listener {} executed!", listener.getClass().getName());
+            if (connectionState == ConnectionState.CONNECTED
+                    || connectionState == ConnectionState.RECONNECTED) {
+                Map<String, ZKListener> zkListeners = zkListenersHolder.getZkListeners();
+                if (MapUtils.isEmpty(zkListeners)) {
+                    logger.info("not find zklistener");
+                    return;
+                }
+                for (Map.Entry<String, ZKListener> entry : zkListeners.entrySet()) {
+                    entry.getValue().executor(zkClient, entry.getKey());
+                    logger.info("Listener {} executed!", entry.getValue().getClass().getName());
                 }
             }
         });
 
-        zkClient.getUnhandledErrorListenable().addListener((message, e) -> logger.info("CuratorFramework unhandledError: {}", message));
+        zkClient.getUnhandledErrorListenable().addListener(
+                (message, e) -> logger.info("CuratorFramework unhandledError: {}", message));
     }
 
     // 自行设置连接参数
-    public CuratorFramework createWithOptions(String zkConnectionString, RetryPolicy retryPolicy, int connectionTimeoutMs, int sessionTimeoutMs) {
+    public CuratorFramework createWithOptions(String zkConnectionString, RetryPolicy retryPolicy,
+            int connectionTimeoutMs, int sessionTimeoutMs) {
         return CuratorFrameworkFactory.builder()
                 .connectString(zkConnectionString)
                 .retryPolicy(retryPolicy)

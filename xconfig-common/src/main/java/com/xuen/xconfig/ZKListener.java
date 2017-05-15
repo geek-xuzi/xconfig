@@ -7,6 +7,6 @@ import org.apache.curator.framework.CuratorFramework;
  */
 public interface ZKListener {
 
-    void executor(CuratorFramework client);
+    void executor(CuratorFramework client,String path);
 
 }
