@@ -43,8 +43,8 @@ public class ZkListenersHolder implements ApplicationListener<ContextRefreshedEv
             return;
         }
 
-        ApplicationContext applicationContext = contextRefreshedEvent.getApplicationContext();
-        Map<String, Object> ZkListenters = applicationContext.getBeansWithAnnotation(Zklis.class);
+        Map<String, Object> ZkListenters = contextRefreshedEvent.getApplicationContext()
+                .getBeansWithAnnotation(Zklis.class);
 
         if (MapUtils.isEmpty(ZkListenters)) {
             logger.warn("No ZkListenter Found!");
