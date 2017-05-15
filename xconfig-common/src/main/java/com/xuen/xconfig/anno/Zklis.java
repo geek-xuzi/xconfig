@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface ZkLis {
+public @interface Zklis {
 
     String path() default "";
+
 }

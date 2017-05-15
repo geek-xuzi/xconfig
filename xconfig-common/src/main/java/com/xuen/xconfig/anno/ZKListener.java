@@ -1,4 +1,4 @@
-package com.xuen.xconfig;
+package com.xuen.xconfig.anno;
 
 import org.apache.curator.framework.CuratorFramework;
 

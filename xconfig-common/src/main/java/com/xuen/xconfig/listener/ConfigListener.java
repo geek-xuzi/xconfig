@@ -1,7 +1,8 @@
-package com.xuen.xconfig;
+package com.xuen.xconfig.listener;
 
 import com.google.common.util.concurrent.MoreExecutors;
-import com.xuen.xconfig.anno.ZkLis;
+import com.xuen.xconfig.anno.ZKListener;
+import com.xuen.xconfig.anno.Zklis;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 
@@ -9,7 +10,7 @@ import org.apache.curator.framework.recipes.cache.NodeCache;
  * @author zheng.xu
  * @since 2017-05-15
  */
-@ZkLis(path = "/xuen")
+@Zklis(path = "/xuen")
 public class ConfigListener implements ZKListener {
 
     @Override
@@ -20,6 +21,7 @@ public class ConfigListener implements ZKListener {
             if (data != null) {
                 // do some thing
             }
+            System.out.println("xuzi" + new String(data, "utf-8"));
 
         }, MoreExecutors.directExecutor());
     }
