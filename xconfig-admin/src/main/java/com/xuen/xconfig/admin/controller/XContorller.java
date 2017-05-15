@@ -20,19 +20,11 @@ public class XContorller {
     @Resource
     private ZookeeperFactoryBean zookeeperFactoryBean;
 
-    @RequestMapping("/zk.action")
+    @RequestMapping("/update.action")
     @ResponseBody
-    public String test() throws Exception {
+    public String updateConf(String path) throws Exception {
         CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
-        zkClient.setData().forPath("/xuen","asda".getBytes());
-        final NodeCache cache = new NodeCache(zkClient, "/xuen");
-        cache.getListenable().addListener(() -> {
-            byte[] data = cache.getCurrentData().getData();
-            //设置日志级别
-            if (data != null) {
-                System.out.println("Setting logback new level to :" + new String(data, "utf-8"));
-            }
-        });
+        zkClient.setData().forPath(path, "asda".getBytes());
         System.out.println("aaa");
         return "ok";
     }
