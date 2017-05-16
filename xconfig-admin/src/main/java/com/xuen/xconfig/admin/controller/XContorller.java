@@ -3,11 +3,9 @@ package com.xuen.xconfig.admin.controller;
 import com.xuen.xconfig.admin.server.XServer;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import javax.annotation.Resource;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.api.GetDataBuilder;
-import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -19,17 +17,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class XContorller {
 
     @Resource
-    private ZookeeperFactoryBean zookeeperFactoryBean;
-
-    @Resource
     private XServer xServer;
 
     @RequestMapping("/update.action")
     @ResponseBody
-    public String updateConf(String path) throws Exception {
-        CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
-        System.out.println(xServer.test());
+    public String updateConf(@RequestParam(required = true) String path, @RequestParam String value)
+            throws Exception {
+        return xServer.updateConf(path, value);
+    }
+
+    @RequestMapping("/update.action")
+    @ResponseBody
+    public String getAllConf(@RequestParam(required = true) String path, String value) {
+
         return xServer.test();
     }
+
 
 }

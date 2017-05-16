@@ -1,16 +1,14 @@
 package com.xuen.xconfig.listener;
 
-import com.google.common.base.Throwables;
+import com.google.common.base.Preconditions;
 import com.xuen.xconfig.anno.Zklis;
-import com.xuen.xconfig.core.QPropertiesEditor;
 import com.xuen.xconfig.core.ZkListenersHolder;
+import com.xuen.xconfig.util.FieldUtil;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +27,8 @@ public class ConfigListener extends AbstractZkListener {
     @Override
     protected void handle(byte[] data, String path) throws UnsupportedEncodingException {
         System.out.println("Setting logback new level to :" + new String(data, "utf-8"));
+        Preconditions.checkArgument(!StringUtils.isEmpty(path), "path 不能为空");
+
         Map<Object, Map<String, Field>> beanXvalues = zkListenersHolder.getBeanXvalues();
         for (Map.Entry<Object, Map<String, Field>> entry : beanXvalues.entrySet()) {
             // String anyProperties = zkListenersHolder.findAnyProperties(entry.getKey());
@@ -36,30 +36,14 @@ public class ConfigListener extends AbstractZkListener {
             if (value.size() < 0) {
                 continue;
             }
-
             for (Map.Entry<String, Field> item : value.entrySet()) {
                 if (path.equals(item.getKey())) {
-                    unsafeSetValue(entry.getKey(), item.getValue(), new String(data, "utf-8"));
+                    FieldUtil.unsafeSetValue(entry.getKey(), item.getValue(), new String(data, "utf-8"));
                 }
             }
 
         }
     }
 
-    private void unsafeSetValue(Object target, Field field, String value) {
-        boolean accessible = field.isAccessible();
-        field.setAccessible(true);
-        try {
-            field.set(target, QPropertiesEditor.INSTANCE.apply(value, field.getType()));
-            logger.debug("MConfig-Driven set bean : {}, field : {}, value : {}",
-                    target.getClass().getSimpleName(), field.getName(), value);
-        } catch (Throwable ignore) { // ignore
-            logger.error(
-                    "MConfig-Driven dynamic reload qConfig error. Please check the bean:{}, field: {}",
-                    target.getClass().getSimpleName(), field.getName(), ignore);
-            throw Throwables.propagate(ignore);
-        } finally { // fix accessible
-            field.setAccessible(accessible);
-        }
-    }
+
 }

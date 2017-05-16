@@ -1,6 +1,5 @@
 package com.xuen.xconfig.core;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.xuen.xconfig.anno.XValue;
@@ -36,18 +35,13 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
         BeanPostProcessor {
 
     public static final int SYSTEM_PROPERTIES_MODE_FALLBACK = 1;
-
     private static final Logger logger = LoggerFactory.getLogger(ZkListenersHolder.class);
-
     private static final AtomicBoolean INIT = new AtomicBoolean(false);
-
     private Map<String, ZKListener> zkListeners = Maps.newHashMap();
-
-
     private static Map<String, String> localPropertiesMap = Maps.newHashMap();
-
     private int springSystemPropertiesMode = SYSTEM_PROPERTIES_MODE_FALLBACK;
     private ZookeeperFactoryBean zookeeperFactoryBean;
+    private Map<Object, Map<String, Field>> beanXvalues = Maps.newHashMap();
 
 
     public Map<String, ZKListener> getZkListeners() {
@@ -64,7 +58,6 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
             return;
         }
 
-        System.out.println("onApplicationEvent");
         Map<String, Object> ZkListenters = contextRefreshedEvent.getApplicationContext()
                 .getBeansWithAnnotation(Zklis.class);
 
@@ -90,9 +83,19 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
     }
 
     @Override
+    public Object postProcessAfterInitialization(Object bean, String s) throws BeansException {
+        Map<String, Field> xFields = Maps.newHashMap();
+        List<Field> fields = Lists.newArrayList(bean.getClass().getDeclaredFields());
+        Safes.of(fields).stream()
+                .filter(input -> input != null && input.isAnnotationPresent(XValue.class))
+                .forEach(input -> xFields.put(input.getAnnotation(XValue.class).value(), input));
+        beanXvalues.put(bean, xFields);
+        return bean;
+    }
+
+    @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)
             throws BeansException {
-        System.out.println("postProcessBeforeInitialization");
         return bean;
     }
 
@@ -123,23 +126,6 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
                 key + " is not found in all the Config files (local, system, qconfig)"); // f
     }
 
-    Map<Object, Map<String, Field>> beanXvalues = Maps.newHashMap();
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String s) throws BeansException {
-        System.out.println("postProcessAfterInitialization");
-        Map<String, Field> xFields = Maps.newHashMap();
-        List<Field> fields = Lists.newArrayList(bean.getClass().getDeclaredFields());
-        Safes.of(fields).stream()
-                .filter(input -> input != null && input.isAnnotationPresent(XValue.class))
-                .forEach(input -> {
-                    xFields.put(input.getAnnotation(XValue.class).value(), input);
-//                    String property = findAnyProperties(input.getAnnotation(XValue.class).value());
-//                    unsafeSetValue(bean, input, property);
-                });
-        beanXvalues.put(bean, xFields);
-        return bean;
-    }
 
     @Override
     public void setSystemPropertiesMode(int systemPropertiesMode) {

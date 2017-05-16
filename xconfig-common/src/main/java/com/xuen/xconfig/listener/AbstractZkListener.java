@@ -1,5 +1,6 @@
 package com.xuen.xconfig.listener;
 
+import com.google.common.util.concurrent.MoreExecutors;
 import com.xuen.xconfig.anno.ZKListener;
 import java.io.UnsupportedEncodingException;
 import org.apache.curator.framework.CuratorFramework;
@@ -18,9 +19,9 @@ public abstract class AbstractZkListener implements ZKListener {
             byte[] data = cache.getCurrentData().getData();
             //设置日志级别
             if (data != null) {
-                handle(data,path);
+                handle(data, path);
             }
-        });
+        }, MoreExecutors.directExecutor());
         try {
             cache.start();
         } catch (Exception e) {
