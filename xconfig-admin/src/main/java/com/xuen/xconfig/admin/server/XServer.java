@@ -1,8 +1,12 @@
 package com.xuen.xconfig.admin.server;
 
+import com.google.common.base.Preconditions;
+import com.xuen.xconfig.admin.bean.APIResult;
 import com.xuen.xconfig.anno.XValue;
-import com.xuen.xconfig.core.ZkListenersHolder;
+import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.curator.framework.CuratorFramework;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,15 +20,21 @@ public class XServer {
     private String s = "xuzheng";
 
     @Resource
-    private ZkListenersHolder zkListenersHolder;
+    private ZookeeperFactoryBean zookeeperFactoryBean;
 
     public String test() {
         return s;
     }
 
-    public String updateConf(String path, String value) {
-//        Pro
-
-        return null;
+    public APIResult updateConf(String path, String value) throws Exception {
+        Preconditions.checkArgument(!StringUtils.isEmpty(path), "path 不能为空");
+        CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
+        try {
+            // TODO: 17-5-16 持久化
+            zkClient.setData().forPath(path, value.getBytes("utf-8"));
+            return new APIResult(1, "配置更改成功");
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

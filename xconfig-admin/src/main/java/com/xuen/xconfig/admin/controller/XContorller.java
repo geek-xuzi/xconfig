@@ -1,5 +1,6 @@
 package com.xuen.xconfig.admin.controller;
 
+import com.xuen.xconfig.admin.bean.APIResult;
 import com.xuen.xconfig.admin.server.XServer;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import javax.annotation.Resource;
@@ -21,9 +22,13 @@ public class XContorller {
 
     @RequestMapping("/update.action")
     @ResponseBody
-    public String updateConf(@RequestParam(required = true) String path, @RequestParam String value)
-            throws Exception {
-        return xServer.updateConf(path, value);
+    public APIResult updateConf(@RequestParam(required = true) String path,
+            @RequestParam String value) {
+        try {
+            return xServer.updateConf(path, value);
+        } catch (Exception e) {
+            return new APIResult(0, "配置修改失败");
+        }
     }
 
     @RequestMapping("/update.action")
