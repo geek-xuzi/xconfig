@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
  * @since 2017-05-15
  */
 @Zklis(path = "/xuen")
-public  class ConfigListener extends AbstractZkListener {
+public class ConfigListener extends AbstractZkListener {
 
 
     @Override
