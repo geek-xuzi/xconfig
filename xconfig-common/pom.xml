@@ -16,7 +16,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.xuen.xconfig</groupId>
+            <artifactId>xconfig-persistence</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>xconfig-common</finalName>

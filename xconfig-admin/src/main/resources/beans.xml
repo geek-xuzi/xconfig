@@ -8,13 +8,30 @@
        http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <!-- 1.扫描包service,dao -->
     <context:component-scan base-package="com.xuen.xconfig.*"/>
 
 
     <bean id="zookeeperFactoryBean" class="com.xuen.xconfig.core.ZookeeperFactoryBean">
         <property name="zkConnectionString"
           value="xuzi520.cn:2181,xuzi520.cn:2182,xuzi520.cn:2183"/>
+    </bean>
+
+    <!--<bean id="syncRedisClient" class="com.xuen.xconfig.redis.RedisFartory"-->
+      <!--factory-method="createSimpleSync">-->
+        <!--<constructor-arg name="host" value="xuzi520.cn"/>-->
+        <!--<constructor-arg name="port" value="6379"/>-->
+        <!--<constructor-arg name="password" value="xuen123456"/>-->
+    <!--</bean>-->
+
+    <bean id="aSyncRedisClient" class="com.xuen.xconfig.redis.RedisFartory"
+      factory-method="createSimpleAsync">
+        <constructor-arg name="host" value="xuzi520.cn"/>
+        <constructor-arg name="port" value="6379"/>
+        <constructor-arg name="password" value="xuen123456"/>
+    </bean>
+
+    <bean id="redisClient" class="com.xuen.xconfig.redis.RedisClient">
+        <constructor-arg ref="aSyncRedisClient"/>
     </bean>
 
 </beans>

@@ -12,10 +12,14 @@
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.2.8" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:1.2.2" />
           <element id="library" level="project" name="Maven: com.github.miemiedev:mybatis-paginator:1.2.15" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.2" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.32" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.9" />
           <element id="archive" name="xconfig-common-1.0-SNAPSHOT.jar">
             <element id="module-output" name="xconfig-common" />
+          </element>
+          <element id="archive" name="xconfig-persistence-1.0.jar">
+            <element id="module-output" name="xconfig-persistence" />
           </element>
           <element id="library" level="project" name="Maven: junit:junit:4.9" />
           <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.1" />
@@ -25,7 +29,6 @@
           <element id="library" level="project" name="Maven: org.apache.curator:curator-framework:2.5.0" />
           <element id="library" level="project" name="Maven: org.apache.curator:curator-client:2.5.0" />
           <element id="library" level="project" name="Maven: org.apache.curator:curator-recipes:2.5.0" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.5" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:19.0" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.2" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.0" />
@@ -55,6 +58,16 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-instrument:4.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: com.xuen.lettuce-redis:lettuce-redis:1.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: biz.paluch.redis:lettuce:4.3.1.Final" />
+          <element id="library" level="project" name="Maven: io.reactivex:rxjava:1.2.1" />
+          <element id="library" level="project" name="Maven: io.netty:netty-common:4.1.6.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport:4.1.6.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-buffer:4.1.6.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-resolver:4.1.6.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-handler:4.1.6.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec:4.1.6.Final" />
+          <element id="library" level="project" name="Maven: org.slf4j:log4j-over-slf4j:1.7.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

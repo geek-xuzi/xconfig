@@ -22,19 +22,19 @@ public class XContorller {
 
     @RequestMapping("/update.action")
     @ResponseBody
-    public APIResult updateConf(@RequestParam(required = true) String path,
+    public APIResult updateConf(@RequestParam String path,
             @RequestParam String value) {
         try {
+            System.out.println(path + ":" + value);
             return xServer.updateConf(path, value);
         } catch (Exception e) {
             return new APIResult(0, "配置修改失败");
         }
     }
 
-    @RequestMapping("/update.action")
+    @RequestMapping("/test.action")
     @ResponseBody
-    public String getAllConf(@RequestParam(required = true) String path, String value) {
-
+    public String test() {
         return xServer.test();
     }
 

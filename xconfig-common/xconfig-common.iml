@@ -25,15 +25,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="xconfig-persistence" />
     <orderEntry type="library" name="Maven: junit:junit:4.9" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.zookeeper:zookeeper:3.4.6" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: jline:jline:0.9.94" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty:3.7.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.apache.curator:curator-framework:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.curator:curator-client:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.curator:curator-recipes:2.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.0" level="project" />
@@ -63,5 +64,15 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-instrument:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: com.xuen.lettuce-redis:lettuce-redis:1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: biz.paluch.redis:lettuce:4.3.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.reactivex:rxjava:1.2.1" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.6.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.6.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.6.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.6.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.6.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.6.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:log4j-over-slf4j:1.7.2" level="project" />
   </component>
 </module>

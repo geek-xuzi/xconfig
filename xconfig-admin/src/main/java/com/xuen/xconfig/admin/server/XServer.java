@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.xuen.xconfig.admin.bean.APIResult;
 import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
+import com.xuen.xconfig.redis.RedisClient;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
@@ -17,13 +18,19 @@ import org.springframework.stereotype.Component;
 public class XServer {
 
     @XValue("/xuen")
-    private String s = "xuzheng";
+    private String s = "adjska";
+
+    @XValue("/fd")
+    private String b = "asdasd";
 
     @Resource
     private ZookeeperFactoryBean zookeeperFactoryBean;
 
+    @Resource
+    private RedisClient redisClient;
+
     public String test() {
-        return s;
+        return s + b;
     }
 
     public APIResult updateConf(String path, String value) throws Exception {
@@ -31,10 +38,12 @@ public class XServer {
         CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
         try {
             // TODO: 17-5-16 持久化
+            redisClient.set(path, value);
             zkClient.setData().forPath(path, value.getBytes("utf-8"));
-            return new APIResult(1, "配置更改成功");
+            return new APIResult(1, "配置更改成功", value);
         } catch (Exception e) {
             throw e;
         }
     }
+
 }
