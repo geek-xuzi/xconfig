@@ -1,5 +1,6 @@
 package com.xuen.xconfig.admin.controller;
 
+import com.xuen.xconfig.admin.server.XServer;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import javax.annotation.Resource;
 import org.apache.curator.framework.CuratorFramework;
@@ -20,14 +21,15 @@ public class XContorller {
     @Resource
     private ZookeeperFactoryBean zookeeperFactoryBean;
 
+    @Resource
+    private XServer xServer;
+
     @RequestMapping("/update.action")
     @ResponseBody
     public String updateConf(String path) throws Exception {
         CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
-        zkClient.setData().forPath(path, "asda".getBytes());
-        System.out.println("aaa");
-        return "ok";
+        System.out.println(xServer.test());
+        return xServer.test();
     }
-
 
 }

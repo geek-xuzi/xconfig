@@ -18,7 +18,7 @@ public abstract class AbstractZkListener implements ZKListener {
             byte[] data = cache.getCurrentData().getData();
             //设置日志级别
             if (data != null) {
-                handle(data);
+                handle(data,path);
             }
         });
         try {
@@ -28,6 +28,6 @@ public abstract class AbstractZkListener implements ZKListener {
         }
     }
 
-    protected abstract void handle(byte[] data) throws UnsupportedEncodingException;
+    protected abstract void handle(byte[] data, String path) throws UnsupportedEncodingException;
 
 }

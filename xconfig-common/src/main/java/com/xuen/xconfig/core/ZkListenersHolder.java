@@ -43,6 +43,7 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
 
     private Map<String, ZKListener> zkListeners = Maps.newHashMap();
 
+
     private static Map<String, String> localPropertiesMap = Maps.newHashMap();
 
     private int springSystemPropertiesMode = SYSTEM_PROPERTIES_MODE_FALLBACK;
@@ -51,6 +52,10 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
 
     public Map<String, ZKListener> getZkListeners() {
         return zkListeners;
+    }
+
+    public Map<Object, Map<String, Field>> getBeanXvalues() {
+        return beanXvalues;
     }
 
     @Override
@@ -91,24 +96,8 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
         return bean;
     }
 
-    private void unsafeSetValue(Object target, Field field, String value) {
-        boolean accessible = field.isAccessible();
-        field.setAccessible(true);
-        try {
-            field.set(target, QPropertiesEditor.INSTANCE.apply(value, field.getType()));
-            logger.debug("MConfig-Driven set bean : {}, field : {}, value : {}",
-                    target.getClass().getSimpleName(), field.getName(), value);
-        } catch (Throwable ignore) { // ignore
-            logger.error(
-                    "MConfig-Driven dynamic reload qConfig error. Please check the bean:{}, field: {}",
-                    target.getClass().getSimpleName(), field.getName(), ignore);
-            throw Throwables.propagate(ignore);
-        } finally { // fix accessible
-            field.setAccessible(accessible);
-        }
-    }
 
-    private String findAnyProperties(String key) {
+    public String findAnyProperties(String key) {
         // load
         // TODO: 17-5-15  1 从zk加载
         CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
@@ -134,16 +123,21 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
                 key + " is not found in all the Config files (local, system, qconfig)"); // f
     }
 
+    Map<Object, Map<String, Field>> beanXvalues = Maps.newHashMap();
+
     @Override
     public Object postProcessAfterInitialization(Object bean, String s) throws BeansException {
         System.out.println("postProcessAfterInitialization");
+        Map<String, Field> xFields = Maps.newHashMap();
         List<Field> fields = Lists.newArrayList(bean.getClass().getDeclaredFields());
         Safes.of(fields).stream()
                 .filter(input -> input != null && input.isAnnotationPresent(XValue.class))
                 .forEach(input -> {
-                    String property = findAnyProperties(input.getAnnotation(XValue.class).value());
-                    unsafeSetValue(bean, input, property);
+                    xFields.put(input.getAnnotation(XValue.class).value(), input);
+//                    String property = findAnyProperties(input.getAnnotation(XValue.class).value());
+//                    unsafeSetValue(bean, input, property);
                 });
+        beanXvalues.put(bean, xFields);
         return bean;
     }
 
@@ -162,6 +156,5 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
             String valueStr = resolvePlaceholder(keyStr, props, springSystemPropertiesMode);
             localPropertiesMap.put(keyStr, valueStr);
         }
-
     }
 }
