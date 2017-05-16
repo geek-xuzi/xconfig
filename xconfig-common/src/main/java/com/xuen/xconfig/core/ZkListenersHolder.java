@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.anno.ZKListener;
 import com.xuen.xconfig.anno.Zklis;
+import com.xuen.xconfig.util.FieldUtil;
 import com.xuen.xconfig.util.Safes;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -96,13 +97,21 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)
             throws BeansException {
+        List<Field> fields = Lists.newArrayList(bean.getClass().getDeclaredFields());
+        Safes.of(fields).stream()
+                .filter(input -> input != null && input.isAnnotationPresent(XValue.class))
+                .forEach(input -> {
+                    if (null == input) return;
+                    String property = findAnyProperties(input.getAnnotation(XValue.class).value());
+                    FieldUtil.unsafeSetValue(bean, input, property);
+                });
         return bean;
     }
 
 
     public String findAnyProperties(String key) {
         // load
-        // TODO: 17-5-15  1 从zk加载
+        // TODO: 17-5-15  1 从远程加载
         CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
         try {
             byte[] data = zkClient.getData().watched().forPath(key);

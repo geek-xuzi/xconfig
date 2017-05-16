@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 public class XServer {
 
     @XValue("/xuen")
-    private String s = "adjska";
+    private int s = 2;
 
     @XValue("/fd")
-    private String b = "asdasd";
+    private int b = 1;
 
     @Resource
     private ZookeeperFactoryBean zookeeperFactoryBean;
@@ -30,7 +30,7 @@ public class XServer {
     private RedisClient redisClient;
 
     public String test() {
-        return s + b;
+        return s + b + "";
     }
 
     public APIResult updateConf(String path, String value) throws Exception {
