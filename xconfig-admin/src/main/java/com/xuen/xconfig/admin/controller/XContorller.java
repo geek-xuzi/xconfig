@@ -1,6 +1,8 @@
 package com.xuen.xconfig.admin.controller;
 
 import com.xuen.xconfig.admin.bean.APIResult;
+import com.xuen.xconfig.admin.bean.Config;
+import com.xuen.xconfig.admin.bean.ConfigStatus;
 import com.xuen.xconfig.admin.server.XServer;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import javax.annotation.Resource;
@@ -38,5 +40,10 @@ public class XContorller {
         return xServer.test();
     }
 
+    @RequestMapping("/create.action")
+    @ResponseBody
+    public APIResult create(@RequestParam Config config) {
+        return xServer.create(config);
+    }
 
 }

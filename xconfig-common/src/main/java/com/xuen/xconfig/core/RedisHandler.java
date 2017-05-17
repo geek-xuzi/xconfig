@@ -28,7 +28,7 @@ public class RedisHandler {
     @Resource
     private ZkListenersHolder zkListenersHolder;
 
-    @PostConstruct
+//    @PostConstruct
     public void executor() {
         Map<Object, Map<String, Field>> beanXvalues = zkListenersHolder.getBeanXvalues();
         ScheduledExecutorService scheduledService = Executors.newScheduledThreadPool(10);

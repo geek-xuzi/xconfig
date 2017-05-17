@@ -2,6 +2,8 @@ package com.xuen.xconfig.admin.server;
 
 import com.google.common.base.Preconditions;
 import com.xuen.xconfig.admin.bean.APIResult;
+import com.xuen.xconfig.admin.bean.Config;
+import com.xuen.xconfig.admin.bean.ConfigStatus;
 import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import com.xuen.xconfig.redis.RedisClient;
@@ -18,10 +20,8 @@ import org.springframework.stereotype.Component;
 public class XServer {
 
     @XValue("/xuen")
-    private int s = 2;
+    private int s = 5;
 
-    @XValue("/fd")
-    private int b = 1;
 
     @Resource
     private ZookeeperFactoryBean zookeeperFactoryBean;
@@ -30,7 +30,7 @@ public class XServer {
     private RedisClient redisClient;
 
     public String test() {
-        return s + b + "";
+        return s + "";
     }
 
     public APIResult updateConf(String path, String value) throws Exception {
@@ -46,4 +46,9 @@ public class XServer {
         }
     }
 
+
+    public APIResult create(Config config) {
+        Preconditions.checkArgument(config.getConfigType() != null, "configStatus 不能是空");
+        return null;
+    }
 }

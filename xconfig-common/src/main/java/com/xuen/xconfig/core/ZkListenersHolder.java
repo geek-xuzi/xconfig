@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
@@ -81,6 +82,17 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+        Safes.of(beanXvalues).entrySet().stream()
+                .filter(entry -> CollectionUtils.isNotEmpty(entry.getValue().entrySet()))
+                .forEach(entry -> {
+                    entry.getValue().entrySet().forEach(item -> {
+                        String properties = findAnyProperties(item.getKey());
+                        FieldUtil.unsafeSetValue(entry.getKey(),item.getValue(),properties);
+                    });
+                });
     }
 
     @Override
@@ -97,14 +109,6 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)
             throws BeansException {
-        List<Field> fields = Lists.newArrayList(bean.getClass().getDeclaredFields());
-        Safes.of(fields).stream()
-                .filter(input -> input != null && input.isAnnotationPresent(XValue.class))
-                .forEach(input -> {
-                    if (null == input) return;
-                    String property = findAnyProperties(input.getAnnotation(XValue.class).value());
-                    FieldUtil.unsafeSetValue(bean, input, property);
-                });
         return bean;
     }
 
@@ -112,9 +116,9 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
     public String findAnyProperties(String key) {
         // load
         // TODO: 17-5-15  1 从远程加载
-        CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
         try {
-            byte[] data = zkClient.getData().watched().forPath(key);
+            CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
+            byte[] data = zkClient.getData().forPath(key);
             if (data != null) {
                 return new String(data, "utf-8");
             }
@@ -132,7 +136,7 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
             return s;
         }
         throw new IllegalArgumentException(
-                key + " is not found in all the Config files (local, system, qconfig)"); // f
+                key + " is not found in all the Config files (local, system, xconfig)"); // f
     }
 
 

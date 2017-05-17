@@ -19,7 +19,7 @@ public abstract class AbstractZkListener implements ZKListener {
             byte[] data = cache.getCurrentData().getData();
             //设置日志级别
             if (data != null) {
-                handle(data, path);
+                handle(data,path);
             }
         }, MoreExecutors.directExecutor());
         try {
