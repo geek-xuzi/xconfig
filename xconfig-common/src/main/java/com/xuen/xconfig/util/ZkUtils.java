@@ -63,4 +63,17 @@ public class ZkUtils {
             e.printStackTrace();
         }
     }
+
+    public static String getDataForRemoteByKey(String path, String key, CuratorFramework zkClient) {
+        String s = "";
+        try {
+            byte[] data = zkClient.getData().forPath(path);
+            if (data != null) {
+                s = new String(data, "utf-8");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return DataFormatUtil.formatData(s, key);
+    }
 }

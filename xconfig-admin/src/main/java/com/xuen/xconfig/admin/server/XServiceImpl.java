@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class XServiceImpl implements XService {
 
-    @XValue("/xuen")
+    @XValue("xuen")
     private int s = 5;
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(XServiceImpl.class);

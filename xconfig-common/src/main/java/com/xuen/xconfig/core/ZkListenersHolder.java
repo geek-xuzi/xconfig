@@ -7,6 +7,7 @@ import com.xuen.xconfig.anno.ZKListener;
 import com.xuen.xconfig.anno.Zklis;
 import com.xuen.xconfig.util.FieldUtil;
 import com.xuen.xconfig.util.Safes;
+import com.xuen.xconfig.util.ZkUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.curator.framework.CuratorFramework;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -86,10 +86,13 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
         Safes.of(beanXvalues).entrySet().stream()
                 .filter(entry -> CollectionUtils.isNotEmpty(entry.getValue().entrySet()))
                 .forEach(entry -> {
-                    entry.getValue().entrySet().forEach(item -> {
-                        String properties = findAnyProperties(item.getKey());
-                        FieldUtil.unsafeSetValue(entry.getKey(), item.getValue(), properties);
-                    });
+                    entry.getValue().entrySet().stream()
+                            .forEach(item -> {
+
+                                String properties = findAnyProperties(item.getKey());
+                                FieldUtil.unsafeSetValue(entry.getKey(), item.getValue(),
+                                        properties);
+                            });
                 });
     }
 
@@ -115,10 +118,11 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
         // load
         // TODO: 17-5-15  1 从远程加载
         try {
-            CuratorFramework zkClient = zookeeperFactoryBean.getZkClient();
-            byte[] data = zkClient.getData().forPath(key);
+
+            String data = ZkUtils.getDataForRemoteByKey("/xuen", key,
+                    zookeeperFactoryBean.getZkClient());
             if (data != null) {
-                return new String(data, "utf-8");
+                return data;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,8 +137,9 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
         if (null != s) {
             return s;
         }
-        throw new IllegalArgumentException(
-                key + " is not found in all the Config files (local, system, xconfig)"); // f
+        return 1+"";
+//        throw new IllegalArgumentException(
+//                key + " is not found in all the Config files (local, system, xconfig)"); // f
     }
 
 
@@ -154,4 +159,5 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
             localPropertiesMap.put(keyStr, valueStr);
         }
     }
+
 }
