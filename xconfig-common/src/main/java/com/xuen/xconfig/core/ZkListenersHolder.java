@@ -83,14 +83,12 @@ public class ZkListenersHolder extends PropertyPlaceholderConfigurer implements
             e.printStackTrace();
         }
 
-
-
         Safes.of(beanXvalues).entrySet().stream()
                 .filter(entry -> CollectionUtils.isNotEmpty(entry.getValue().entrySet()))
                 .forEach(entry -> {
                     entry.getValue().entrySet().forEach(item -> {
                         String properties = findAnyProperties(item.getKey());
-                        FieldUtil.unsafeSetValue(entry.getKey(),item.getValue(),properties);
+                        FieldUtil.unsafeSetValue(entry.getKey(), item.getValue(), properties);
                     });
                 });
     }

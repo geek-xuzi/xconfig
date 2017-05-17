@@ -2,6 +2,7 @@ package com.xuen.xconfig.redis;
 
 import com.lambdaworks.redis.RedisFuture;
 import com.lambdaworks.redis.api.async.RedisAsyncCommands;
+import java.util.Map;
 
 /**
  * @author zheng.xu
@@ -24,4 +25,18 @@ public class RedisClient {
         RedisFuture<String> redisFuture = redisAsyncCommands.get(key);
         return redisFuture;
     }
+
+    public RedisFuture hMSet(String key, Map map) {
+        return redisAsyncCommands.hmset(key, map);
+    }
+
+    public RedisFuture hMGet(String key, String field) {
+        return redisAsyncCommands.hmget(key, field);
+    }
+
+
+    public RedisFuture sAdd(String key, String data) {
+        return redisAsyncCommands.sadd(key, data);
+    }
+
 }

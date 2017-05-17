@@ -5,6 +5,15 @@ package com.xuen.xconfig.admin.bean;
  * @since 2017-05-17
  */
 public enum ConfigType {
-    JSON,
-    PROPERTIES
+    JSON("json"),
+    PROPERTIES("properties");
+    private String desc;
+
+    ConfigType(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }
