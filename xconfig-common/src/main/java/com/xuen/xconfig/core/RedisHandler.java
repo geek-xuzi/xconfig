@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +25,7 @@ public class RedisHandler {
     private RedisClient redisClient;
 
     @Resource
-    private ZkListenersHolder zkListenersHolder;
+    private CoreHolder zkListenersHolder;
 
 //    @PostConstruct
     public void executor() {

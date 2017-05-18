@@ -1,14 +1,16 @@
-package com.xuen.xconfig.admin.server;
+package com.xuen.xconfig.admin.service;
 
 import com.google.common.base.Preconditions;
 import com.xuen.xconfig.admin.bean.APIResult;
-import com.xuen.xconfig.admin.bean.Config;
-import com.xuen.xconfig.admin.bean.ConfigType;
+import com.xuen.xconfig.admin.dao.ConfigDao;
 import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
+import com.xuen.xconfig.module.Config;
+import com.xuen.xconfig.module.ConfigType;
 import com.xuen.xconfig.redis.RedisClient;
 import com.xuen.xconfig.util.ZkUtils;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Resource;
 import javax.script.ScriptEngine;
@@ -18,18 +20,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.KeeperException.NodeExistsException;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author zheng.xu
  * @since 2017-05-16
  */
-@Component
+@Service
 public class XServiceImpl implements XService {
 
     @XValue("xuen")
     private int s = 5;
 
+    @XValue("sadas")
+    public int n = 5;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(XServiceImpl.class);
 
     @Resource
@@ -38,9 +44,9 @@ public class XServiceImpl implements XService {
     @Resource
     private RedisClient redisClient;
 
-    public String test() {
-        return s + "";
-    }
+    @Autowired
+    private ConfigDao configDao;
+
 
     public APIResult updateConf(String path, String value) throws Exception {
         Preconditions.checkArgument(!StringUtils.isEmpty(path), "path 不能为空");
@@ -71,7 +77,7 @@ public class XServiceImpl implements XService {
             return new APIResult(0, "创建失败");
 
         }
-        return new APIResult(1, "创建成功");
+        return new APIResult(1, "创建成功" +s);
     }
 
     private void insertZk(Config config) {
@@ -131,7 +137,7 @@ public class XServiceImpl implements XService {
                     zookeeperFactoryBean.getZkClient().setData()
                             .forPath(createPath(appName, configName, configType.getDesc()), bytes);
                 } catch (Exception e) {
-                    return ;
+                    return;
                 }
             });
         } catch (UnsupportedEncodingException e) {
@@ -141,6 +147,12 @@ public class XServiceImpl implements XService {
         }
 
         return new APIResult(1, "更改成功");
+    }
+
+    @Override
+    public List<Config> getConf(String token) {
+
+        return configDao.getConf(token);
     }
 
 

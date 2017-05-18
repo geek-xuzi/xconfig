@@ -1,4 +1,4 @@
-package com.xuen.xconfig.core;
+package com.xuen.xconfig.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;

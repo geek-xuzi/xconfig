@@ -34,9 +34,14 @@ public class RedisClient {
         return redisAsyncCommands.hmget(key, field);
     }
 
-
     public RedisFuture sAdd(String key, String data) {
         return redisAsyncCommands.sadd(key, data);
     }
+
+
+    public  RedisFuture sMembers(String token) {
+        return redisAsyncCommands.smembers(token);
+    }
+
 
 }

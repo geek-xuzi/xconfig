@@ -2,7 +2,7 @@ package com.xuen.xconfig.listener;
 
 import com.google.common.base.Preconditions;
 import com.xuen.xconfig.anno.Zklis;
-import com.xuen.xconfig.core.ZkListenersHolder;
+import com.xuen.xconfig.core.CoreHolder;
 import com.xuen.xconfig.util.FieldUtil;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -22,7 +22,7 @@ public class ConfigListener extends AbstractZkListener {
     private static final Logger logger = LoggerFactory.getLogger(ConfigListener.class);
 
     @Resource
-    private ZkListenersHolder zkListenersHolder;
+    private CoreHolder zkListenersHolder;
 
     @Override
     protected void handle(byte[] data, String path) throws UnsupportedEncodingException {
