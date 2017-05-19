@@ -1,4 +1,4 @@
-package com.xuen.xconfig.admin.bean;
+package com.xuen.admin.bean;
 
 /**
  * @author zheng.xu

@@ -1,8 +1,7 @@
-package com.xuen.xconfig.admin.controller;
+package com.xuen.admin.controller;
 
-import com.xuen.xconfig.admin.bean.APIResult;
-import com.xuen.xconfig.admin.service.XService;
-import com.xuen.xconfig.admin.service.XServiceImpl;
+import com.xuen.admin.service.XService;
+import com.xuen.admin.bean.APIResult;
 import com.xuen.xconfig.module.Config;
 import java.util.List;
 import javax.annotation.Resource;

@@ -1,8 +1,8 @@
-package com.xuen.xconfig.admin.service;
+package com.xuen.admin.service;
 
 import com.google.common.base.Preconditions;
-import com.xuen.xconfig.admin.bean.APIResult;
-import com.xuen.xconfig.admin.dao.ConfigDao;
+import com.xuen.admin.bean.APIResult;
+import com.xuen.admin.dao.ConfigDao;
 import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import com.xuen.xconfig.module.Config;

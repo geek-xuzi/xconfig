@@ -1,4 +1,4 @@
-package com.xuen.xconfig.admin.dao;
+package com.xuen.admin.dao;
 
 import com.xuen.xconfig.module.Config;
 import java.util.List;

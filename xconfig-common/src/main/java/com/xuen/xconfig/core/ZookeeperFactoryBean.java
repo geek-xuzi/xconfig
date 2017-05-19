@@ -22,7 +22,7 @@ public class ZookeeperFactoryBean {
     }
 
     // 设置ZK链接字符串
-    public void setZkConnectionString(String zkConnectionString) {
+    public ZookeeperFactoryBean(String zkConnectionString) {
         this.zkConnectionString = zkConnectionString;
     }
 

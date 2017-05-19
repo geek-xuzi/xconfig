@@ -36,7 +36,6 @@ import org.springframework.stereotype.Component;
  * @since 2017-05-15
  */
 
-@Component
 public class CoreHolder implements ApplicationListener<ContextRefreshedEvent>,
         BeanPostProcessor {
 
