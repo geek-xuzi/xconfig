@@ -92,21 +92,21 @@ public class XServiceImpl implements XService {
                     }
                 });
                 // 记录修改的值
-                boolean fig = newValues.size() - oldValues.size() >= 0;
-                Iterator<Entry<Object, Object>> iterator0 = newValues.entrySet().iterator();
-                Iterator<Entry<String, String>> iterator1 = oldValues.entrySet().iterator();
-
-                if (fig) {
-                    addChangeValue(iterator0,iterator1,);
-                    while (iterator0.hasNext()) {
-                        Entry<Object, Object> next0 = iterator0.next();
-                        Entry<String, String> next1 = iterator1.next();
-                        if (((String) next0.getKey()).equals(next1.getKey())
-                                && !next0.getValue().equals(next1.getValue())) {
-
-                        }
-                    }
-                }
+//                boolean fig = newValues.size() - oldValues.size() >= 0;
+//                Iterator<Entry<Object, Object>> iterator0 = newValues.entrySet().iterator();
+//                Iterator<Entry<String, String>> iterator1 = oldValues.entrySet().iterator();
+//
+//                if (fig) {
+//                    addChangeValue(iterator0,iterator1,);
+//                    while (iterator0.hasNext()) {
+//                        Entry<Object, Object> next0 = iterator0.next();
+//                        Entry<String, String> next1 = iterator1.next();
+//                        if (((String) next0.getKey()).equals(next1.getKey())
+//                                && !next0.getValue().equals(next1.getValue())) {
+//
+//                        }
+//                    }
+//                }
             }
 
         } catch (Exception e) {

@@ -7,10 +7,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>xconfig-common</artifactId>
+    <artifactId>xconfig-client</artifactId>
     <packaging>jar</packaging>
-    <name>xconfig-common</name>
-    <url>http://maven.apache.org</url>
+    <name>xconfig-client</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -23,6 +22,6 @@
         <!--</dependency>-->
     </dependencies>
     <build>
-        <finalName>xconfig-common</finalName>
+        <finalName>xconfig-client</finalName>
     </build>
 </project>

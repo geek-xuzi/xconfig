@@ -7,12 +7,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="xconfig-admin" />
+        <module name="xconfig-client" />
         <module name="xconfig-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="xconfig" target="1.8" />
       <module name="xconfig-admin" target="1.8" />
+      <module name="xconfig-client" target="1.8" />
+      <module name="xconfig-client (1)" target="1.5" />
       <module name="xconfig-common" target="1.8" />
       <module name="xconfig-persistence" target="1.8" />
     </bytecodeTargetLevel>
