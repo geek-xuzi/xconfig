@@ -4,13 +4,17 @@ import com.google.common.base.Preconditions;
 import com.xuen.admin.bean.APIResult;
 import com.xuen.admin.dao.ConfigDao;
 import com.xuen.xconfig.anno.XValue;
+import com.xuen.xconfig.core.CoreHolder;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import com.xuen.xconfig.module.Config;
 import com.xuen.xconfig.module.ConfigType;
 import com.xuen.xconfig.redis.RedisClient;
 import com.xuen.xconfig.util.ZkUtils;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Resource;
 import javax.script.ScriptEngine;
@@ -22,6 +26,7 @@ import org.apache.zookeeper.KeeperException.NodeExistsException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author zheng.xu
@@ -48,8 +53,17 @@ public class XServiceImpl implements XService {
 
 
     public String test() {
-        System.out.println(s+n);
+        System.out.println(s + n);
         return s + n;
+    }
+
+    @Override
+    public APIResult upload(MultipartFile file, String token) throws IOException {
+        InputStream in = file.getInputStream();
+        Properties properties = new Properties();
+        properties.load(in);
+        redisClient.hMSet(token, properties);
+        return new APIResult(1, "加载成功");
     }
 
     public APIResult updateConf(String path, String value) throws Exception {

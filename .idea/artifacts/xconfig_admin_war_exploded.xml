@@ -16,11 +16,9 @@
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.32" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.9" />
           <element id="archive" name="xconfig-common-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="xconfig-common" />
+            <element id="module-output" name="xconfig-cilent" />
           </element>
-          <element id="archive" name="xconfig-persistence-1.0.jar">
-            <element id="module-output" name="xconfig-persistence" />
-          </element>
+          <element id="library" level="project" name="Maven: com.xuen.xconfig:xconfig-persistence:1.0" />
           <element id="library" level="project" name="Maven: junit:junit:4.9" />
           <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.1" />
           <element id="library" level="project" name="Maven: org.apache.zookeeper:zookeeper:3.4.6" />

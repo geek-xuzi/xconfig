@@ -3,11 +3,13 @@ package com.xuen.admin.controller;
 import com.xuen.admin.service.XService;
 import com.xuen.admin.bean.APIResult;
 import com.xuen.xconfig.module.Config;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author zheng.xu
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequestMapping("/xconfig")
 @Controller
-public class XContorller {
+public class ConfigContorller {
 
     @Resource
     private XService xService;
@@ -42,6 +44,17 @@ public class XContorller {
     @ResponseBody
     public String test() {
         return xService.test();
+    }
+
+    @RequestMapping("/prop/upload.action")
+    @ResponseBody
+    public APIResult upload(MultipartFile file) {
+        try {
+            return xService.upload(file, "ascdsfasdfdsf");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new APIResult(0, "更新失败");
+        }
     }
 
 }

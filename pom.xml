@@ -9,7 +9,6 @@
     <modules>
         <module>xconfig-common</module>
         <module>xconfig-admin</module>
-        <module>xconfig-persistence</module>
     </modules>
     <packaging>pom</packaging>
     <name>curator-xconfig</name>

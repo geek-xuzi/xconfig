@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuen.admin.dao.DbAppDao">
+
+
+    <insert id="insertDbApp" parameterType="com.xuen.admin.bean.DbApp">
+        INSERT INTO xuen.db_app(app_name, token, create_time) VALUES (#{dbApp.app_name},#{dbApp.token},#{dbApp.create_time})
+  </insert>
+
+    <delete id="deleteApp" parameterType="int">
+      DELETE FROM xuen.db_app WHERE aid = #{aid}
+    </delete>
+</mapper>

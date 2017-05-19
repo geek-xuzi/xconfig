@@ -11,47 +11,23 @@
 
 
     <context:component-scan base-package="com.xuen.admin.*,com.xuen.xconfig">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        <context:exclude-filter type="annotation"
+          expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     <context:property-placeholder location="classpath:*.properties"/>
 
-    <!--<bean id="zookeeperFactoryBean" class="com.xuen.xconfig.core.ZookeeperFactoryBean">-->
-        <!--<property name="zkConnectionString"-->
-          <!--value="xuzi520.cn:2181,xuzi520.cn:2182,xuzi520.cn:2183"/>-->
-    <!--</bean>-->
-    <!--<bean id="aSyncRedisClient" class="com.xuen.xconfig.redis.RedisFartory"-->
-      <!--factory-method="createSimpleAsync">-->
-        <!--<constructor-arg name="host" value="xuzi520.cn"/>-->
-        <!--<constructor-arg name="port" value="6379"/>-->
-        <!--<constructor-arg name="password" value="xuen123456"/>-->
-    <!--</bean>-->
-    <!--<bean id="syncRedisClient" class="com.xuen.xconfig.redis.RedisFartory"-->
-      <!--factory-method="createSimpleSync">-->
-        <!--<constructor-arg name="host" value="xuzi520.cn"/>-->
-        <!--<constructor-arg name="port" value="6379"/>-->
-        <!--<constructor-arg name="password" value="xuen123456"/>-->
-    <!--</bean>-->
-
-
-
-    <!--<bean id="redisClient" class="com.xuen.xconfig.redis.RedisClient">-->
-        <!--<constructor-arg ref="aSyncRedisClient"/>-->
-    <!--</bean>-->
-
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
       destroy-method="close">
-        <property name="url" value="${jdbc.url}" />
-        <property name="username" value="${jdbc.username}" />
-        <property name="password" value="${jdbc.password}" />
-        <property name="driverClassName" value="${jdbc.driverClassName}" />
-        <property name="maxActive" value="10" />
-        <property name="minIdle" value="5" />
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="5"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <!--&lt;!&ndash; 跟mybatis进行整合 &ndash;&gt;-->
-        <!--<property name="configLocation" value="classpath:sqlMapConfig.xml"/>-->
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
 
@@ -72,7 +48,6 @@
             <tx:method name="find*" read-only="true"/>
             <tx:method name="get*" read-only="true"/>
             <tx:method name="*" propagation="REQUIRED" read-only="false"/>
-
         </tx:attributes>
     </tx:advice>
 
@@ -86,4 +61,12 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.xuen.admin.dao"></property>
     </bean>
+
+    <bean id="multipartResolver"
+      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="10485760000"></property>
+        <property name="maxInMemorySize" value="40960"></property>
+    </bean>
+
 </beans>

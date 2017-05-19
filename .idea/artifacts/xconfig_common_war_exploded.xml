@@ -4,7 +4,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="xconfig-common" />
+          <element id="module-output" name="xconfig-cilent" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
@@ -49,9 +49,9 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/xconfig-common/target/xconfig-common/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/xconfig-cilent/target/xconfig-common/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="xconfig-common/web/Web" />
+      <element id="javaee-facet-resources" facet="xconfig-cilent/web/Web" />
     </root>
   </artifact>
 </component>

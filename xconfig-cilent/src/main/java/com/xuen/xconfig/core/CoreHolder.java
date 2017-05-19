@@ -2,7 +2,6 @@ package com.xuen.xconfig.core;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.lambdaworks.redis.RedisFuture;
 import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.anno.ZKListener;
 import com.xuen.xconfig.module.Config;
@@ -13,23 +12,16 @@ import com.xuen.xconfig.util.Safes;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
 
 /**
  * @author zheng.xu
@@ -47,7 +39,6 @@ public class CoreHolder implements ApplicationListener<ContextRefreshedEvent>,
     private int springSystemPropertiesMode = SYSTEM_PROPERTIES_MODE_FALLBACK;
     private ZookeeperFactoryBean zookeeperFactoryBean;
     private Map<Object, Map<String, Field>> beanXvalues = Maps.newHashMap();
-    private static String URL = "http://localhost:8080/xconfig/get.action";
     private Config config = null;
     private RedisClient redisClient;
     private Map<String, String> values = Maps.newHashMap();
@@ -78,12 +69,10 @@ public class CoreHolder implements ApplicationListener<ContextRefreshedEvent>,
         redisClient = (RedisClient) contextRefreshedEvent.getApplicationContext()
                 .getBean("redisClient");
         TOKEN = PropertyUtil.getProperty("token");
-        URL += "?token=" + TOKEN;
-        // 1 使用token从redis中获取该应用的配置信息
-
         try {
+            // 使用token从redis中获取该应用的配置信息
             values = redisClient.hgetall(TOKEN).get(1000, TimeUnit.MILLISECONDS);
-            FieldUtil.setRemotValue(beanXvalues,values);
+            FieldUtil.setRemotValue(beanXvalues, values);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

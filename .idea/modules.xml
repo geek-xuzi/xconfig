@@ -4,8 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/xconfig.iml" filepath="$PROJECT_DIR$/xconfig.iml" />
       <module fileurl="file://$PROJECT_DIR$/xconfig-admin/xconfig-admin.iml" filepath="$PROJECT_DIR$/xconfig-admin/xconfig-admin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xconfig-common/xconfig-common.iml" filepath="$PROJECT_DIR$/xconfig-common/xconfig-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xconfig-persistence/xconfig-persistence.iml" filepath="$PROJECT_DIR$/xconfig-persistence/xconfig-persistence.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xconfig-cilent/xconfig-cilent.iml" filepath="$PROJECT_DIR$/xconfig-cilent/xconfig-cilent.iml" />
     </modules>
   </component>
 </project>
