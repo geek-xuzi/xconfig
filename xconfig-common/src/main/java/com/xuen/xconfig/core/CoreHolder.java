@@ -2,6 +2,7 @@ package com.xuen.xconfig.core;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.lambdaworks.redis.RedisFuture;
 import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.anno.ZKListener;
 import com.xuen.xconfig.module.Config;
@@ -12,14 +13,20 @@ import com.xuen.xconfig.util.Safes;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -44,7 +51,9 @@ public class CoreHolder implements ApplicationListener<ContextRefreshedEvent>,
     private static String URL = "http://localhost:8080/xconfig/get.action";
     private Config config = null;
     private RedisClient redisClient;
-    private Map<String, String> values;
+    private Map<String, String> values = Maps.newHashMap();
+    public static String TOKEN = "";
+
 
     public Map<String, ZKListener> getZkListeners() {
         return zkListeners;
@@ -58,24 +67,31 @@ public class CoreHolder implements ApplicationListener<ContextRefreshedEvent>,
         return config;
     }
 
+    public Map<String, String> getValues() {
+        return values;
+    }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (!INIT.compareAndSet(false, true)) {
             return;
         }
-
-        String token = PropertyUtil.getProperty("token");
-        URL += "?token=" + token;
-        // 1 使用token从redis中获取该应用的配置信息
         redisClient = (RedisClient) contextRefreshedEvent.getApplicationContext()
                 .getBean("redisClient");
-        redisClient.sMembers(token).whenComplete((o1, o2) -> {
-            ((Set) o1).stream()
-                    .filter(v -> StringUtils.isNotEmpty((CharSequence) v))
-                    .forEach(item -> {
-                        values = FieldUtil.parseConfig((String) item);
-                    });
-        });
+        TOKEN = PropertyUtil.getProperty("token");
+        URL += "?token=" + TOKEN;
+        // 1 使用token从redis中获取该应用的配置信息
+
+        try {
+            values = redisClient.hgetall(TOKEN).get(1000, TimeUnit.MILLISECONDS);
+            FieldUtil.setRemotValue(beanXvalues,values);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            logger.warn("从redis获取数据超时");
+        }
         //        HttpUtil.asyncGet("www.baidu.com", (response) -> {
 //            String responseBody = null;
 //            try {
@@ -110,20 +126,26 @@ public class CoreHolder implements ApplicationListener<ContextRefreshedEvent>,
 //            e.printStackTrace();
 //        }
 //
-        Safes.of(beanXvalues).entrySet().stream()
-                .filter(entry -> CollectionUtils.isNotEmpty(entry.getValue().entrySet()))
-                .forEach(entry -> {
-                    entry.getValue().entrySet().stream()
-                            .forEach(item -> {
-                                String properties = values.get(item.getKey());
-                                FieldUtil.unsafeSetValue(entry.getKey(), item.getValue(),
-                                        properties);
-                            });
-                });
+//        Safes.of(beanXvalues).entrySet().stream()
+//                .filter(entry -> CollectionUtils.isNotEmpty(entry.getValue().entrySet()))
+//                .forEach(entry -> {
+//                    entry.getValue().entrySet().stream()
+//                            .forEach(item -> {
+//                                String properties = values.get(item.getKey());
+//                                FieldUtil.unsafeSetValue(entry.getKey(), item.getValue(),
+//                                        properties);
+//                            });
+//                });
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String s) throws BeansException {
+        return bean;
+    }
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName)
+            throws BeansException {
         Map<String, Field> xFields = Maps.newHashMap();
         List<Field> fields = Lists.newArrayList(bean.getClass().getDeclaredFields());
         Safes.of(fields).stream()
@@ -132,12 +154,6 @@ public class CoreHolder implements ApplicationListener<ContextRefreshedEvent>,
         if (xFields.size() > 0) {
             beanXvalues.put(bean, xFields);
         }
-        return bean;
-    }
-
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName)
-            throws BeansException {
         return bean;
     }
 

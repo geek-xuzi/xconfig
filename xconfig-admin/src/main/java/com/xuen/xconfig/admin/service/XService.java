@@ -15,4 +15,6 @@ public interface XService {
     APIResult updateConf(Config config);
 
     List<Config> getConf(String token);
+
+    String test();
 }

@@ -3,6 +3,7 @@ package com.xuen.xconfig.redis;
 import com.lambdaworks.redis.RedisFuture;
 import com.lambdaworks.redis.api.async.RedisAsyncCommands;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author zheng.xu
@@ -10,7 +11,7 @@ import java.util.Map;
  */
 public class RedisClient {
 
-    private RedisAsyncCommands redisAsyncCommands;
+    private RedisAsyncCommands<String, String> redisAsyncCommands;
 
     RedisClient(RedisAsyncCommands redisAsyncCommands) {
         this.redisAsyncCommands = redisAsyncCommands;
@@ -30,8 +31,17 @@ public class RedisClient {
         return redisAsyncCommands.hmset(key, map);
     }
 
+    public RedisFuture hSet(String key, String field, String value) {
+        return redisAsyncCommands.hset(key, field, value);
+    }
+
     public RedisFuture hMGet(String key, String field) {
         return redisAsyncCommands.hmget(key, field);
+    }
+
+    public RedisFuture<Map<String, String>> hgetall(String key) {
+        RedisFuture<Map<String, String>> result = redisAsyncCommands.hgetall(key);
+        return result;
     }
 
     public RedisFuture sAdd(String key, String data) {
@@ -39,8 +49,9 @@ public class RedisClient {
     }
 
 
-    public  RedisFuture sMembers(String token) {
-        return redisAsyncCommands.smembers(token);
+    public RedisFuture<Set<String>> sMembers(String token) {
+        RedisFuture<Set<String>> result = redisAsyncCommands.smembers(token);
+        return result;
     }
 
 

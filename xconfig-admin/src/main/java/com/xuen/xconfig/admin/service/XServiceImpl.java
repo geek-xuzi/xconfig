@@ -21,7 +21,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.KeeperException.NodeExistsException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,10 +31,10 @@ import org.springframework.stereotype.Service;
 public class XServiceImpl implements XService {
 
     @XValue("xuen")
-    private int s = 5;
+    private String s;
 
-    @XValue("sadas")
-    public int n = 5;
+    @XValue("asds")
+    public String n;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(XServiceImpl.class);
 
     @Resource
@@ -47,6 +46,11 @@ public class XServiceImpl implements XService {
     @Autowired
     private ConfigDao configDao;
 
+
+    public String test() {
+        System.out.println(s+n);
+        return s + n;
+    }
 
     public APIResult updateConf(String path, String value) throws Exception {
         Preconditions.checkArgument(!StringUtils.isEmpty(path), "path 不能为空");
@@ -77,7 +81,7 @@ public class XServiceImpl implements XService {
             return new APIResult(0, "创建失败");
 
         }
-        return new APIResult(1, "创建成功" +s);
+        return new APIResult(1, "创建成功" + s);
     }
 
     private void insertZk(Config config) {

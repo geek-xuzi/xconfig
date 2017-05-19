@@ -1,12 +1,11 @@
 package com.xuen.xconfig.admin.controller;
 
 import com.xuen.xconfig.admin.bean.APIResult;
+import com.xuen.xconfig.admin.service.XService;
 import com.xuen.xconfig.admin.service.XServiceImpl;
-import com.xuen.xconfig.anno.XValue;
 import com.xuen.xconfig.module.Config;
 import java.util.List;
 import javax.annotation.Resource;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,11 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class XContorller {
 
-    @XValue("asdsa")
-    private String d;
-
     @Resource
-    private XServiceImpl xService;
+    private XService xService;
 
     @RequestMapping("/update.action")
     @ResponseBody
@@ -41,6 +37,12 @@ public class XContorller {
     @ResponseBody
     public List<Config> getConf(String token) {
         return xService.getConf(token);
+    }
+
+    @RequestMapping("/test.action")
+    @ResponseBody
+    public String test() {
+        return xService.test();
     }
 
 }
