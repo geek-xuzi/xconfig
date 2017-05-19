@@ -1,10 +1,10 @@
 package com.xuen.admin.service;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import com.xuen.admin.bean.APIResult;
 import com.xuen.admin.dao.ConfigDao;
 import com.xuen.xconfig.anno.XValue;
-import com.xuen.xconfig.core.CoreHolder;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import com.xuen.xconfig.module.Config;
 import com.xuen.xconfig.module.ConfigType;
@@ -13,13 +13,20 @@ import com.xuen.xconfig.util.ZkUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import javax.annotation.Resource;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.KeeperException.NodeExistsException;
@@ -60,11 +67,68 @@ public class XServiceImpl implements XService {
     @Override
     public APIResult upload(MultipartFile file, String token) throws IOException {
         InputStream in = file.getInputStream();
-        Properties properties = new Properties();
-        properties.load(in);
-        redisClient.hMSet(token, properties);
+        Map<Object, Object> AddValues = Maps.newHashMap();
+        Map<Object, Object> RemoveValues = Maps.newHashMap();
+        Properties newValues = new Properties();
+        newValues.load(in);
+        try {
+            Map<String, String> oldValues = redisClient.hgetall(token)
+                    .get(1000, TimeUnit.MILLISECONDS);
+            // diff
+            if (CollectionUtils.isNotEmpty(oldValues.entrySet())) {
+                // 1 记录增加
+                newValues.entrySet().forEach(entry -> {
+                    if (!oldValues.containsKey(entry.getKey())) {
+                        // 增加的值
+                        AddValues.put(entry.getKey(), entry.getValue());
+                    }
+
+                });
+
+                oldValues.entrySet().forEach(entry -> {
+                    if (!newValues.containsKey(entry.getKey())) {
+                        // 删除的值
+                        RemoveValues.put(entry.getKey(), entry.getValue());
+                    }
+                });
+                // 记录修改的值
+                boolean fig = newValues.size() - oldValues.size() >= 0;
+                Iterator<Entry<Object, Object>> iterator0 = newValues.entrySet().iterator();
+                Iterator<Entry<String, String>> iterator1 = oldValues.entrySet().iterator();
+
+                if (fig) {
+                    addChangeValue(iterator0,iterator1,);
+                    while (iterator0.hasNext()) {
+                        Entry<Object, Object> next0 = iterator0.next();
+                        Entry<String, String> next1 = iterator1.next();
+                        if (((String) next0.getKey()).equals(next1.getKey())
+                                && !next0.getValue().equals(next1.getValue())) {
+
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new APIResult(0, "获取数据失败");
+        }
+        redisClient.hMSet(token, newValues);
         return new APIResult(1, "加载成功");
     }
+
+    private void addChangeValue(Iterator iterator0, Iterator iterator1, Map<String, String> map) {
+        while (iterator0.hasNext()) {
+            Entry<String, String> next0 = (Entry<String, String>) iterator0.next();
+            Entry<String, String> next1 = (Entry<String, String>) iterator1.next();
+            if (next0.getKey().equals(next1.getKey())
+                    && !next0.getValue().equals(next1.getValue())) {
+                map.put(next0.getValue(), next1.getValue());
+            }
+        }
+    }
+
+    ;
 
     public APIResult updateConf(String path, String value) throws Exception {
         Preconditions.checkArgument(!StringUtils.isEmpty(path), "path 不能为空");

@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author zheng.xu
  * @since 2017-05-15
  */
-@RequestMapping("/xconfig")
+@RequestMapping("/xconfig/prop")
 @Controller
 public class ConfigContorller {
 
@@ -46,11 +46,11 @@ public class ConfigContorller {
         return xService.test();
     }
 
-    @RequestMapping("/prop/upload.action")
+    @RequestMapping("/upload.action")
     @ResponseBody
-    public APIResult upload(MultipartFile file) {
+    public APIResult upload(MultipartFile file, String token) {
         try {
-            return xService.upload(file, "ascdsfasdfdsf");
+            return xService.upload(file, token);
         } catch (IOException e) {
             e.printStackTrace();
             return new APIResult(0, "更新失败");
