@@ -49,7 +49,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/xconfig-cilent/target/xconfig-common/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/xconfig-client/target/xconfig-common/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="xconfig-cilent/web/Web" />
     </root>

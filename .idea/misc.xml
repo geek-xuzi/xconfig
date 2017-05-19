@@ -2,7 +2,7 @@
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/xconfig-admin" />
-    <file type="web" url="file://$PROJECT_DIR$/xconfig-cilent" />
+    <file type="web" url="file://$PROJECT_DIR$/xconfig-client" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
