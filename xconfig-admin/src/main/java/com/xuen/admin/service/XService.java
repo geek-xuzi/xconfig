@@ -4,6 +4,8 @@ import com.xuen.admin.bean.APIResult;
 import com.xuen.xconfig.module.Config;
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
+
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -18,7 +20,7 @@ public interface XService {
 
     List<Config> getConf(String token);
 
-    String test();
+    Properties test();
 
     APIResult upload(MultipartFile file, String token) throws IOException;
 }

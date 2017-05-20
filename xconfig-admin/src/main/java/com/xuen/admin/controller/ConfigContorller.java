@@ -5,6 +5,7 @@ import com.xuen.admin.bean.APIResult;
 import com.xuen.xconfig.module.Config;
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class ConfigContorller {
 
     @RequestMapping("/test.action")
     @ResponseBody
-    public String test() {
+    public Properties test() {
         return xService.test();
     }
 

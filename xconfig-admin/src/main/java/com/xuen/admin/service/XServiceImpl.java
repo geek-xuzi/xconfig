@@ -5,11 +5,13 @@ import com.google.common.collect.Maps;
 import com.xuen.admin.bean.APIResult;
 import com.xuen.admin.dao.ConfigDao;
 import com.xuen.xconfig.anno.XValue;
+import com.xuen.xconfig.core.CoreHolder;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import com.xuen.xconfig.module.Config;
 import com.xuen.xconfig.module.ConfigType;
 import com.xuen.xconfig.redis.RedisClient;
 import com.xuen.xconfig.util.ZkUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -26,6 +28,7 @@ import javax.annotation.Resource;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
@@ -47,6 +50,9 @@ public class XServiceImpl implements XService {
 
     @XValue("asds")
     public String n;
+
+    @Resource
+    private CoreHolder coreHolder;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(XServiceImpl.class);
 
     @Resource
@@ -59,9 +65,11 @@ public class XServiceImpl implements XService {
     private ConfigDao configDao;
 
 
-    public String test() {
+    public Properties test() {
         System.out.println(s + n);
-        return s + n;
+        Properties properties = coreHolder.getProperties();
+//        properties = System.getProperties();
+        return properties;
     }
 
     @Override

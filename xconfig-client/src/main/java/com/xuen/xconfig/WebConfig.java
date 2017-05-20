@@ -23,10 +23,10 @@ public class WebConfig extends DelegatingWebMvcConfiguration {
         return new RedisClient(RedisFartory.createSimpleAsync("xuzi520.cn", 6379, "xuen123456"));
     }
 
-    @Bean
-    public CoreHolder createCoreHolder() {
-        return new CoreHolder();
-    }
+//    @Bean
+//    public CoreHolder createCoreHolder() {
+//        return new CoreHolder();
+//    }
 
     @Bean
     public ZookeeperFactoryBean createZookeeperFactoryBean() {
