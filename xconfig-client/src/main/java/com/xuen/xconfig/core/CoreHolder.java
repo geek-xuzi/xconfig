@@ -78,7 +78,8 @@ public class CoreHolder extends PropertyPlaceholderConfigurer implements Applica
         if (!INIT.compareAndSet(false, true)) {
             return;
         }
-        System.out.print(getProperties().toString() + "aaaaa");
+
+        System.out.print("onApplicationEvent");
         redisClient = (RedisClient) contextRefreshedEvent.getApplicationContext()
                 .getBean("redisClient");
         TOKEN = PropertyUtil.getProperty("token");
@@ -141,6 +142,8 @@ public class CoreHolder extends PropertyPlaceholderConfigurer implements Applica
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String s) throws BeansException {
+
+            System.out.print("postProcessAfterInitialization");
         return bean;
     }
 
@@ -155,6 +158,7 @@ public class CoreHolder extends PropertyPlaceholderConfigurer implements Applica
         if (xFields.size() > 0) {
             beanXvalues.put(bean, xFields);
         }
+        System.out.print("postProcessBeforeInitialization");
         return bean;
     }
 
@@ -212,6 +216,7 @@ public class CoreHolder extends PropertyPlaceholderConfigurer implements Applica
         properties.put("jdbc.url", "jdbc:mysql://xuzi520.cn:3306/xuen?characterEncoding=utf-8&useUnicode=true&createDatabaseIfNoExist=true");
         properties.put("jdbc.driverClassName", "com.mysql.jdbc.Driver");
         this.propertiesb = properties;
+        System.out.print("mergeProperties");
         return properties;
     }
 }
