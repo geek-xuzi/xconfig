@@ -9,7 +9,6 @@ import com.xuen.xconfig.redis.RedisClient;
 import com.xuen.xconfig.util.FieldUtil;
 import com.xuen.xconfig.util.PropertyUtil;
 import com.xuen.xconfig.util.Safes;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -19,24 +18,21 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 /**
  * @author zheng.xu
  * @since 2017-05-15
  */
 
-public class CoreHolder extends PropertyPlaceholderConfigurer implements ApplicationListener<ContextRefreshedEvent>,
+public class CoreHolder extends PropertyPlaceholderConfigurer implements
+        ApplicationListener<ContextRefreshedEvent>,
         BeanPostProcessor {
 
     public static final int SYSTEM_PROPERTIES_MODE_FALLBACK = 1;
@@ -143,7 +139,7 @@ public class CoreHolder extends PropertyPlaceholderConfigurer implements Applica
     @Override
     public Object postProcessAfterInitialization(Object bean, String s) throws BeansException {
 
-            System.out.print("postProcessAfterInitialization");
+        System.out.print("postProcessAfterInitialization");
         return bean;
     }
 
@@ -213,7 +209,8 @@ public class CoreHolder extends PropertyPlaceholderConfigurer implements Applica
         Properties properties = super.mergeProperties();
         properties.put("jdbc.username", "xuen");
         properties.put("jdbc.password", "xuen");
-        properties.put("jdbc.url", "jdbc:mysql://xuzi520.cn:3306/xuen?characterEncoding=utf-8&useUnicode=true&createDatabaseIfNoExist=true");
+        properties.put("jdbc.url",
+                "jdbc:mysql://xuzi520.cn:3306/xuen?characterEncoding=utf-8&useUnicode=true&createDatabaseIfNoExist=true");
         properties.put("jdbc.driverClassName", "com.mysql.jdbc.Driver");
         this.propertiesb = properties;
         System.out.print("mergeProperties");

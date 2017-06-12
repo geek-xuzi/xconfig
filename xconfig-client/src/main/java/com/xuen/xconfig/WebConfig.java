@@ -1,6 +1,5 @@
 package com.xuen.xconfig;
 
-import com.xuen.xconfig.core.CoreHolder;
 import com.xuen.xconfig.core.ZookeeperFactoryBean;
 import com.xuen.xconfig.redis.RedisClient;
 import com.xuen.xconfig.redis.RedisFartory;

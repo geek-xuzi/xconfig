@@ -35,10 +35,7 @@ public abstract class AbstractZkListener implements ZKListener {
                     break;
                 default:
                     break;
-//                //设置日志级别
-//            if (data != null) {
-//                handle(data, path);
-//            }
+
         }}, MoreExecutors.directExecutor());
         try {
             cache.start();
